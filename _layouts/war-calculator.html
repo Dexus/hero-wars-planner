@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" data-baseurl="{{site.baseurl}}">
+{% include svg.html %}
+
+{% include head.html %}
+
+<body>
+  <main class="wrapper">
+    {% raw %}
+    <div id="calculator" class="calculator">
+      <h1>Silver League Calculator</h1>
+
+      <table>
+        <thead>
+          <tr>
+            <td></td>
+            <td>Monday</td>
+            <td>Tuesday</td>
+            <td>Wednesday</td>
+            <td>Thursday</td>
+            <td>Friday</td>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr v-for="(guild, index) in guilds" v-if="index > 0">
+            <td>
+              <input type="text" v-model="guilds[index]" />
+            </td>
+
+            <!-- Odd guilds -->
+            <template v-if="index % 2">
+              <td>{{ guilds[(index + 3) % 10 || 10] }}</td>
+              <td>{{ guilds[(index + 5) % 10 || 10] }}</td>
+              <td>{{ guilds[(index + 7) % 10 || 10] }}</td>
+              <td>{{ guilds[(index + 9) % 10 || 10] }}</td>
+              <td>{{ guilds[(index + 11) % 10 || 10] }}</td>
+            </template>
+
+            <!-- Even guilds -->
+            <template v-else>
+              <td>{{ guilds[(index + 10 - 3) % 10] }}</td>
+              <td>{{ guilds[(index + 10 - 5) % 10] }}</td>
+              <td>{{ guilds[(index + 10 - 7) % 10] }}</td>
+              <td>{{ guilds[(index + 10 - 9) % 10] }}</td>
+              <td>{{ guilds[(index + 10 - 11) % 10] }}</td>
+            </template>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    {% endraw %}
+  </main>
+
+  {% include footer.html %}
+
+  {% include scripts.html %}
+</body>
+
+</html>
