@@ -1,0 +1,81 @@
+.loadingbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 8px;
+  background: #3a86ff;
+}
+
+.toe {
+  .titans {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    width: 200px;
+    margin: 0 auto 60px;
+
+    li {
+      flex: 0 0 25%;
+      width: 25%;
+      max-width: 25%;
+    }
+
+    img {
+      opacity: .5;
+      max-width: 46px;
+      margin: 2px;
+    }
+
+    input {
+      display: none;
+
+      &:checked + img {
+        opacity: 1;
+      }
+    }
+  }
+
+  table {
+    width: 700px;
+    margin: 0 auto;
+
+    tfoot {
+      td {
+        font-weight: bold;
+        padding: 40px 0 20px;
+      }
+    }
+
+    thead {
+      font-weight: 600;
+      color: #261CD1;
+
+      th {
+        padding-bottom: 20px;
+        font-weight: 600;
+      }
+    }
+
+    td {
+      padding: 5px 10px;
+      text-align: center;
+      vertical-align: middle;
+      border: solid $white;
+      border-width: 2px 0;
+    }
+
+    .missed td:first-child {
+      border-left: 8px solid #ffadad;
+    }
+  }
+
+  img {
+    max-width: 32px;
+    background: black;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin: 1px;
+    border: 1px solid #666;
+  }
+}
