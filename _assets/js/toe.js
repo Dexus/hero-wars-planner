@@ -69,7 +69,7 @@ var toe = new Vue({
 function getData(fileindex) {
   var nextfile = fileindex + 1;
 
-  $.get('/toe/' + fileindex + '.json', function (data) {
+  $.get('../../toe/' + fileindex + '.json', function (data) {
     var matches = data.results[0].result.response.results;
 
     for (match in matches) {

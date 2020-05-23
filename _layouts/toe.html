@@ -38,7 +38,7 @@
         <li v-for="titan in titans">
           <label>
             <input type="checkbox" :value="titan" v-model="selectedTitans" />
-            <img :src="'/assets/img/Titans/'+ titan + '.png'" />
+            <img :src="'../assets/img/Titans/'+ titan + '.png'" />
           </label>
         </li>
       </ul>
@@ -63,13 +63,13 @@
               <img 
                 v-for="(titan, index) in match.defBattle.attackers" 
                 :title="'Totem level ' + titan.elementSpiritLevel + ', ' + titan.elementSpiritStar + '*'" 
-                :src="'/assets/img/Titans/'+ titan.id + '.png'" />
+                :src="'../assets/img/Titans/'+ titan.id + '.png'" />
             </td>
 
             <td>
               <img 
                 v-for="titan in match.defBattle.defenders[0]" 
-                :src="'/assets/img/Titans/'+ titan.id + '.png'" />
+                :src="'../assets/img/Titans/'+ titan.id + '.png'" />
             </td>
 
             <td>
