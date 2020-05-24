@@ -8,12 +8,43 @@
 }
 
 .toe {
+  &__filters {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    span {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .2px;
+      display: block;
+      padding: 3px 12px;
+      line-height: 20px;
+      margin: 0 5px;
+      box-shadow: 0 0 0 1px #eee;
+      user-select: none;
+
+      &:hover {
+        box-shadow: 0 0 0 1px #333;
+      }
+    }
+
+    input {
+      display: none;
+
+      &:checked + span {
+        box-shadow: 0 0 0 2px #3a86ff;
+      }
+    }
+  }
+
   .titans {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
     width: 200px;
-    margin: 0 auto 60px;
+    margin: 20px auto 60px;
 
     li {
       flex: 0 0 25%;

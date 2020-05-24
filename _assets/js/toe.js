@@ -2,7 +2,6 @@ $(function(){
 var toe = new Vue({
   el: '#toe',
   data: {
-    only_selected: true,
     filters: 'any',
     titans: [
       '4000', '4001', '4002', '4003',
@@ -37,7 +36,7 @@ var toe = new Vue({
       var t = this;
       var aFilteredMatches = t.matches.filter(function (match) {
         return (
-          t.only_selected === false &&
+          !t.selectedTitans.length &&
           (
             (t.filters == 'any' && match.enemypower < 1000000) ||
             (t.filters == 'only_lords' && match.enemypower > 1000000) ||
@@ -47,7 +46,7 @@ var toe = new Vue({
 
           ||
 
-          t.only_selected === true && t.getSelectedTitans() == t.getEnemyTeam(match.defBattle.attackers) &&
+          t.selectedTitans.length && t.getSelectedTitans() == t.getEnemyTeam(match.defBattle.attackers) &&
           (
             (t.filters == 'any' && match.enemypower < 1000000) ||
             ((t.filters == 'only_lords') && (match.enemypower > 1000000)) ||
