@@ -29,14 +29,26 @@
         </label>
       </div>
 
-      <ul class="titans">
-        <li v-for="titan in titans">
-          <label>
-            <input type="checkbox" :value="titan" v-model="selectedTitans" />
-            <img :src="'../assets/img/Titans/'+ titan + '.png'" />
-          </label>
-        </li>
-      </ul>
+      <div class="titans__container">
+        <ul class="titans">
+          <li v-for="titan in titans">
+            <label>
+              <input type="checkbox" :value="titan" v-model="selectedTitans" />
+              <img :src="'../assets/img/Titans/'+ titan + '.png'" />
+            </label>
+          </li>
+        </ul>
+
+        <div class="titans__shortcut">
+          <button title="Select Water Team" v-on:click="setTitans(['4000', '4001', '4002', '4003'])" class="titans__waterteam">💧</button>
+          <button title="Select Fire Team" v-on:click="setTitans(['4010', '4011', '4012', '4013'])" class="titans__fireteam">🔥</button>
+          <button title="Select Earth Team" v-on:click="setTitans(['4020', '4021', '4022', '4023'])" class="titans__earthteam">🍀</button>
+        </div>
+
+        <div class="titans__row">
+          <button v-on:click="setTitans([])" class="titans__clear">Clear Selection</button>
+        </div>
+      </div>
 
       <table>
         <thead>

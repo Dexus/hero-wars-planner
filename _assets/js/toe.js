@@ -25,6 +25,10 @@ var toe = new Vue({
       for (titan in selectedTeam) titans += selectedTeam[titan];
 
       return titans;
+    },
+
+    setTitans: function (team) {
+      this.selectedTitans = team;
     }
   },
   computed: {

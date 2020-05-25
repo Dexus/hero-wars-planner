@@ -44,7 +44,61 @@
     flex-wrap: wrap;
     justify-content: flex-start;
     width: 200px;
-    margin: 20px auto 60px;
+
+    &__container {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 20px 0 60px;
+    }
+
+    &__shortcut {
+      display: flex;
+      flex-direction: column;
+      margin-left: 37px;
+
+      button {
+        width: 46px;
+        height: 46px;
+        line-height: 46px;
+        border-radius: 50%;
+        margin: 2px;
+        font-size: 16px;
+        font-weight: 300;
+        text-align: center;
+        color: $white;
+        border: 1px solid rgba($black, .2);
+      }
+    }
+
+    &__waterteam {
+      background: #359AE8;
+    }
+
+    &__fireteam {
+      background: #F54A48;
+    }
+
+    &__earthteam {
+      background: #4EBF41;
+    }
+
+    &__row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      flex-wrap: wrap;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    &__clear {
+      padding: 8px 32px;
+      border-radius: 16px;
+      background: rgba($black, .2);
+      border: 1px solid rgba($black, .2);
+    }
 
     li {
       flex: 0 0 25%;
