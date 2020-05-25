@@ -90,9 +90,11 @@ gulp.task('build:scripts:local', function() {
 // Optimize and copy image files to the appropriate location.
 gulp.task('build:images', function() {
     return gulp.src(paths.imageFilesGlob)
+        /* Already optimized images
         .pipe(imagemin({
             verbose: true
         }))
+        */
         .pipe(gulp.dest(paths.jekyllImageFiles))
         .pipe(gulp.dest(paths.siteImageFiles))
         .pipe(browserSync.stream());
@@ -103,43 +105,6 @@ gulp.task('build:images:local', function() {
         .pipe(gulp.dest(paths.jekyllImageFiles))
         .pipe(gulp.dest(paths.siteImageFiles))
         .pipe(browserSync.stream());
-});
-
-
-/*
- * Handle font files
- */
-
-// Copy font  files to the appropriate location.
-gulp.task('build:fonts', function() {
-    return gulp.src(paths.fontFiles + '/*/**.*')
-        .pipe(gulp.dest(paths.jekyllFontFiles))
-        .pipe(gulp.dest(paths.siteFontFiles))
-        .pipe(browserSync.stream())
-        .on('error', gutil.log);
-});
-
-
-/*
- * Handle video files
- */
-gulp.task('build:videos', function() {
-    return gulp.src(paths.videoFilesGlob)
-        .pipe(gulp.dest(paths.jekyllVideoFiles))
-        .pipe(gulp.dest(paths.siteVideoFiles))
-        .pipe(browserSync.stream())
-        .on('error', gutil.log);
-});
-
-/*
- * Handle pdf files
- */
-gulp.task('build:pdf', function() {
-    return gulp.src(paths.pdfFilesGlob)
-        .pipe(gulp.dest(paths.jekyllPdfFiles))
-        .pipe(gulp.dest(paths.sitePdfFiles))
-        .pipe(browserSync.stream())
-        .on('error', gutil.log);
 });
 
 
@@ -178,10 +143,7 @@ gulp.task('build:local', function(callback) {
         'build:jekyll:local',
         ['build:scripts:local', 
         'build:images:local', 
-        'build:styles:local', 
-        'build:fonts',
-        'build:videos',
-        'build:pdf'],
+        'build:styles:local' ],
         callback);
 });
 
@@ -205,10 +167,7 @@ gulp.task('build', function(callback) {
         'build:jekyll',
         ['build:scripts', 
         'build:images', 
-        'build:styles', 
-        'build:fonts',
-        'build:videos',
-        'build:pdf'],
+        'build:styles'],
         callback);
 });
 
