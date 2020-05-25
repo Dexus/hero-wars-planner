@@ -1,4 +1,4 @@
-$(function(){
+
 var toe = new Vue({
   el: '#toe',
   data: {
@@ -65,37 +65,39 @@ var toe = new Vue({
   }
 });
 
-function getData(fileindex) {
-  var nextfile = fileindex + 1;
+$(function(){
+  function getData(fileindex) {
+    var nextfile = fileindex + 1;
 
-  $.get('../toe/' + fileindex + '.json', function (data) {
-    var matches = data.results[0].result.response.results;
+    $.get('../toe/' + fileindex + '.json', function (data) {
+      var matches = data.results[0].result.response.results;
 
-    for (match in matches) {
-      var thisMatch = matches[match];
-      // add enemy total power to match data
-      var power = 0;
-      var attackerTeam = thisMatch.defBattle.attackers;
-      for (titan in attackerTeam) {
-        power += attackerTeam[titan].power;
+      for (match in matches) {
+        var thisMatch = matches[match];
+        // add enemy total power to match data
+        var power = 0;
+        var attackerTeam = thisMatch.defBattle.attackers;
+        for (titan in attackerTeam) {
+          power += attackerTeam[titan].power;
+        }
+        matches[match].enemypower = power;
+
+        toe.matches.push(matches[match]);
       }
-      matches[match].enemypower = power;
-
-      toe.matches.push(matches[match]);
-    }
-  })
-    .done(function () {
-      getData(nextfile);
-      $('.loadingbar').css({
-        'width': fileindex + '%'
-      });
     })
-    .fail(function () {
-      $('.loadingbar').css('width', '100%').delay(150).fadeOut(150);
-    });
-}
+      .done(function () {
+        getData(nextfile);
+        $('.loadingbar').css({
+          'width': fileindex + '%'
+        });
+      })
+      .fail(function () {
+        $('.loadingbar').css('width', '100%').delay(150).fadeOut(150);
+      });
+  }
 
-if ($('#toe').length) {
-  getData(1);
-}
+
+  if ($('#toe').length) {
+    getData(1);
+  }
 });
