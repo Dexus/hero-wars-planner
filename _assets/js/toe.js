@@ -34,37 +34,6 @@ var toe = new Vue({
   computed: {
     sortedSelectedTitans: function () {
       return this.selectedTitans.sort();
-    },
-
-    filteredMatches: function () {
-      var t = this;
-      var aFilteredMatches = t.matches.filter(function (match) {
-        return (
-          !t.selectedTitans.length &&
-          (
-            (t.filters == 'any' && match.enemypower < 1000000) ||
-            (t.filters == 'only_lords' && match.enemypower > 1000000) ||
-            (t.filters == 'only_gt_600k' && match.enemypower > 600000 && match.enemypower < 1000000) ||
-            (t.filters == 'misses' && match.enemypower < 1000000 && match.defenceScoreEarned < 50)
-          )
-
-          ||
-
-          t.selectedTitans.length && t.getSelectedTitans() == t.getEnemyTeam(match.defBattle.attackers) &&
-          (
-            (t.filters == 'any' && match.enemypower < 1000000) ||
-            ((t.filters == 'only_lords') && (match.enemypower > 1000000)) ||
-            ((t.filters == 'only_gt_600k') && (match.enemypower > 600000) && (match.enemypower < 1000000)) ||
-            ((t.filters == 'misses') && match.enemypower < 1000000 && (match.defenceScoreEarned < 50))
-          )
-        )
-      });
-
-      var orderedMatches = aFilteredMatches.sort(function (a, b) {
-        return b.enemypower - a.enemypower;
-      });
-
-      return orderedMatches;
     }
   },
   filters: {
@@ -72,7 +41,6 @@ var toe = new Vue({
       return new Date(timestamp * 1000).toLocaleString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
     },
     humanPlayer: function(id) {
-      console.log(id)
       var player;
 
       if (id == 7737454) player = 'Zero';
@@ -88,6 +56,7 @@ $(function () {
   if ($('#toe').length) {
     $.get('../assets/json/toedata.combined.min.json', function (data) {
       var matches = data.results[0].result.response.results;
+      var matchesArray = [];
 
       for (match in matches) {
         var thisMatch = matches[match];
@@ -97,10 +66,16 @@ $(function () {
         for (titan in attackerTeam) {
           power += attackerTeam[titan].power;
         }
-        matches[match].enemypower = power;
+        thisMatch.enemypower = power;
 
-        toe.matches.push(matches[match]);
+        matchesArray.push(thisMatch);
       }
+
+      var orderedMatches = matchesArray.sort(function (a, b) {
+        return b.enemypower - a.enemypower;
+      });
+
+      toe.matches = orderedMatches;
     });
   }
 });
