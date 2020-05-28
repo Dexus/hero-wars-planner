@@ -60,20 +60,33 @@ var toe = new Vue({
         )
       });
 
-      var orderedMatches = aFilteredMatches.sort(function(a, b) {
+      var orderedMatches = aFilteredMatches.sort(function (a, b) {
         return b.enemypower - a.enemypower;
       });
 
       return orderedMatches;
     }
+  },
+  filters: {
+    humanDate: function (timestamp) {
+      return new Date(timestamp * 1000).toLocaleString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+    },
+    humanPlayer: function(id) {
+      console.log(id)
+      var player;
+
+      if (id == 7737454) player = 'Zero';
+      else if (id == 3244200) player = 'OPM';
+      else if (id == 3075580) player = 'Other OPM';
+
+      return player;
+    }
   }
 });
 
-$(function(){
-  function getData(fileindex) {
-    var nextfile = fileindex + 1;
-
-    $.get('../toe/' + fileindex + '.json', function (data) {
+$(function () {
+  if ($('#toe').length) {
+    $.get('../assets/json/toedata.combined.min.json', function (data) {
       var matches = data.results[0].result.response.results;
 
       for (match in matches) {
@@ -88,20 +101,6 @@ $(function(){
 
         toe.matches.push(matches[match]);
       }
-    })
-      .done(function () {
-        getData(nextfile);
-        $('.loadingbar').css({
-          'width': fileindex + '%'
-        });
-      })
-      .fail(function () {
-        $('.loadingbar').css('width', '100%').delay(150).fadeOut(150);
-      });
-  }
-
-
-  if ($('#toe').length) {
-    getData(1);
+    });
   }
 });

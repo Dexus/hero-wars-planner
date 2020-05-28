@@ -14,6 +14,8 @@ var runSequence  = require('run-sequence');
 var sass         = require('gulp-ruby-sass');
 var uglify       = require('gulp-uglify');
 
+var merge = require('gulp-merge-json');
+
 var paths        = require('./_assets/gulp_config/paths');
 
 
@@ -108,6 +110,52 @@ gulp.task('build:images:local', function() {
 });
 
 
+/**
+ * Concatenate TOE JSON files
+ */
+
+gulp.task('build:toejson', function() {
+  gulp.src('_toe/*.json')
+    .pipe(merge({
+      fileName: 'toedata.combined.min.json',
+      jsonSpace: '',
+      edit: (parsedJson, file) => {
+          var matches = parsedJson.results[0].result.response.results;
+
+          delete parsedJson.results[0].result.quests;
+          delete parsedJson.results[0].result.response.place;
+
+          for(match in matches) {
+            // create a unique id to prevent merging objects together
+            var newId = Date.now() * matches[match].defBattle.seed * Math.floor(Math.random() * 100000);
+
+            matches[newId] = matches[match];
+            delete matches[match];
+
+            var thisMatch = matches[newId];
+
+            // get rid of unused data
+            delete thisMatch.battle;
+            delete thisMatch.defenceTeam;
+            delete thisMatch.rivalTeam;
+            delete thisMatch.reward;
+            delete thisMatch.attackScore;
+            delete thisMatch.scoreEarned;
+            delete thisMatch.attackScoreEarned;
+            delete thisMatch.defBattle.typeId;
+            delete thisMatch.defBattle.progress;
+            delete thisMatch.defBattle.result;
+          }
+
+          return parsedJson;
+      }
+    }))
+    .pipe(gulp.dest('assets/json'))
+    .pipe(gulp.dest('_site/assets/json'))
+    .on('error', gutil.log);
+});
+
+
 /*
  * Clean task
  */
@@ -141,9 +189,10 @@ gulp.task('build:local', function(callback) {
     runSequence(
         'clean',
         'build:jekyll:local',
-        ['build:scripts:local', 
+        ['build:toejson',
+        'build:scripts:local', 
         'build:images:local', 
-        'build:styles:local' ],
+        'build:styles:local'],
         callback);
 });
 
@@ -165,7 +214,8 @@ gulp.task('build', function(callback) {
     runSequence(
         'clean',
         'build:jekyll',
-        ['build:scripts', 
+        ['build:toejson',
+        'build:scripts', 
         'build:images', 
         'build:styles'],
         callback);

@@ -53,7 +53,7 @@
       <table>
         <thead>
           <tr>
-            <th width="85">Power</th>
+            <th width="100">Power</th>
             <th width="249">Attackers</th>
             <th width="249">Defenders</th>
             <th>Defense score</th>
@@ -62,8 +62,8 @@
 
         <tbody>
           <tr v-for="(match, index) in filteredMatches" v-bind:class="{missed : match.defenceScoreEarned < 50}">
-            <td>
-              <strong>{{ match.enemypower }}</strong>
+            <td :title="match.defBattle.startTime | humanDate">
+              <strong>{{ match.enemypower }}</strong><br/>
             </td>
 
             <td>
@@ -79,7 +79,7 @@
                 :src="'../assets/img/Titans/'+ titan.id + '.png'" />
             </td>
 
-            <td>
+            <td :title="match.defBattle.userId | humanPlayer">
               <strong v-bind:class="match.defenceScoreEarned == 50 ? 'green' : 'red'">{{ match.defenceScoreEarned }}</strong>
             </td>
           </tr>
