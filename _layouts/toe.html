@@ -6,115 +6,115 @@
 
 <body>
   <main class="wrapper">
-    <div class="loadingbar"></div>
-
     {% raw %}
     <div id="toe" class="toe">
-      <div class="toe__filters">
-        <label>
-          <input type="radio" name="filter" value="any" v-model="filters" />
-          <span>All</span>
-        </label>
-        <label>
-          <input type="radio" name="filter" value="only_gt_600k" v-model="filters" />
-          <span>> 600k</span>
-        </label>
-        <label>
-          <input type="radio" name="filter" value="misses" v-model="filters" />
-          <span>< 50 points</span>
-        </label>
-        <label>
-          <input type="radio" name="filter" value="only_lords" v-model="filters" />
-          <span>Lords</span>
-        </label>
-      </div>
-
-      <div class="titans__container">
-        <ul class="titans">
-          <li v-for="titan in titans">
-            <label>
-              <input type="checkbox" :value="titan" v-model="selectedTitans" />
-              <img :src="'../assets/img/Titans/'+ titan + '.png'" />
-            </label>
-          </li>
-        </ul>
-
-        <div class="titans__shortcut">
-          <button title="Select Water Team" v-on:click="setTitans(['4000', '4001', '4002', '4003'])" class="titans__waterteam">💧</button>
-          <button title="Select Fire Team" v-on:click="setTitans(['4010', '4011', '4012', '4013'])" class="titans__fireteam">🔥</button>
-          <button title="Select Earth Team" v-on:click="setTitans(['4020', '4021', '4022', '4023'])" class="titans__earthteam">🍀</button>
+      <div v-if="matches.length">
+        <div class="toe__filters">
+          <label>
+            <input type="radio" name="filter" value="any" v-model="filters" />
+            <span>All</span>
+          </label>
+          <label>
+            <input type="radio" name="filter" value="only_gt_600k" v-model="filters" />
+            <span>> 600k</span>
+          </label>
+          <label>
+            <input type="radio" name="filter" value="misses" v-model="filters" />
+            <span>< 50 points</span>
+          </label>
+          <label>
+            <input type="radio" name="filter" value="only_lords" v-model="filters" />
+            <span>Lords</span>
+          </label>
         </div>
 
-        <div class="titans__row">
-          <button v-on:click="setTitans([])" class="titans__clear">Clear Selection</button>
+        <div class="titans__container">
+          <ul class="titans">
+            <li v-for="titan in titans">
+              <label>
+                <input type="checkbox" :value="titan" v-model="selectedTitans" />
+                <img :src="'../assets/img/Titans/'+ titan + '.png'" />
+              </label>
+            </li>
+          </ul>
+
+          <div class="titans__shortcut">
+            <button title="Select Water Team" v-on:click="setTitans(['4000', '4001', '4002', '4003'])" class="titans__waterteam">💧</button>
+            <button title="Select Fire Team" v-on:click="setTitans(['4010', '4011', '4012', '4013'])" class="titans__fireteam">🔥</button>
+            <button title="Select Earth Team" v-on:click="setTitans(['4020', '4021', '4022', '4023'])" class="titans__earthteam">🍀</button>
+          </div>
+
+          <div class="titans__row">
+            <button v-on:click="setTitans([])" class="titans__clear">Clear Selection</button>
+          </div>
         </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th width="100">Power</th>
+              <th width="249">Attackers</th>
+              <th width="249">Defenders</th>
+              <th>Defense score</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr 
+              v-for="(match, index) in matches" 
+              v-bind:class="{missed : match.defenceScoreEarned < 50}"
+
+              v-show="
+              !selectedTitans.length &&
+              (
+                (filters == 'any' && match.enemypower < 1000000) ||
+                (filters == 'only_lords' && match.enemypower > 1000000) ||
+                (filters == 'only_gt_600k' && match.enemypower > 600000 && match.enemypower < 1000000) ||
+                (filters == 'misses' && match.enemypower < 1000000 && match.defenceScoreEarned < 50)
+              )
+
+              ||
+
+              selectedTitans.length && getSelectedTitans() == getEnemyTeam(match.defBattle.attackers) &&
+              (
+                (filters == 'any' && match.enemypower < 1000000) ||
+                ((filters == 'only_lords') && (match.enemypower > 1000000)) ||
+                ((filters == 'only_gt_600k') && (match.enemypower > 600000) && (match.enemypower < 1000000)) ||
+                ((filters == 'misses') && match.enemypower < 1000000 && (match.defenceScoreEarned < 50))
+              )"
+              >
+              <td :title="match.defBattle.startTime | humanDate">
+                <strong>{{ match.enemypower }}</strong><br/>
+              </td>
+
+              <td>
+                <img 
+                  v-for="(titan, index) in match.defBattle.attackers" 
+                  :title="'Totem level ' + titan.elementSpiritLevel + ', ' + titan.elementSpiritStar + '*'" 
+                  :src="'../assets/img/Titans/'+ titan.id + '.png'" />
+              </td>
+
+              <td>
+                <img 
+                  v-for="titan in match.defBattle.defenders[0]" 
+                  :src="'../assets/img/Titans/'+ titan.id + '.png'" />
+              </td>
+
+              <td :title="match.defBattle.userId | humanPlayer">
+                <strong>{{ match.defenceScoreEarned }}</strong>
+              </td>
+            </tr>
+          </tbody>
+
+          <tfoot>
+            <tr>
+              <td colspan="4">
+                Dataset: {{ matches.length }} battles
+              </td>
+            </tr>
+          </tfoot>
+        </table>
       </div>
-
-      <table>
-        <thead>
-          <tr>
-            <th width="100">Power</th>
-            <th width="249">Attackers</th>
-            <th width="249">Defenders</th>
-            <th>Defense score</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr 
-            v-for="(match, index) in matches" 
-            v-bind:class="{missed : match.defenceScoreEarned < 50}"
-
-            v-show="
-            !selectedTitans.length &&
-            (
-              (filters == 'any' && match.enemypower < 1000000) ||
-              (filters == 'only_lords' && match.enemypower > 1000000) ||
-              (filters == 'only_gt_600k' && match.enemypower > 600000 && match.enemypower < 1000000) ||
-              (filters == 'misses' && match.enemypower < 1000000 && match.defenceScoreEarned < 50)
-            )
-
-            ||
-
-            selectedTitans.length && getSelectedTitans() == getEnemyTeam(match.defBattle.attackers) &&
-            (
-              (filters == 'any' && match.enemypower < 1000000) ||
-              ((filters == 'only_lords') && (match.enemypower > 1000000)) ||
-              ((filters == 'only_gt_600k') && (match.enemypower > 600000) && (match.enemypower < 1000000)) ||
-              ((filters == 'misses') && match.enemypower < 1000000 && (match.defenceScoreEarned < 50))
-            )"
-            >
-            <td :title="match.defBattle.startTime | humanDate">
-              <strong>{{ match.enemypower }}</strong><br/>
-            </td>
-
-            <td>
-              <img 
-                v-for="(titan, index) in match.defBattle.attackers" 
-                :title="'Totem level ' + titan.elementSpiritLevel + ', ' + titan.elementSpiritStar + '*'" 
-                :src="'../assets/img/Titans/'+ titan.id + '.png'" />
-            </td>
-
-            <td>
-              <img 
-                v-for="titan in match.defBattle.defenders[0]" 
-                :src="'../assets/img/Titans/'+ titan.id + '.png'" />
-            </td>
-
-            <td :title="match.defBattle.userId | humanPlayer">
-              <strong>{{ match.defenceScoreEarned }}</strong>
-            </td>
-          </tr>
-        </tbody>
-
-        <tfoot>
-          <tr>
-            <td colspan="4">
-              Dataset: {{ matches.length }} battles
-            </td>
-          </tr>
-        </tfoot>
-      </table>
     </div>
     {% endraw %}
   </main>
