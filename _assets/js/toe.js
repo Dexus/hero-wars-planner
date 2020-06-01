@@ -46,6 +46,7 @@ var toe = new Vue({
       if (id == 7737454) player = 'Zero';
       else if (id == 3244200) player = 'OPM';
       else if (id == 3075580) player = 'Other OPM';
+      else player = 'Who knows';
 
       return player;
     }
@@ -58,6 +59,8 @@ $(function () {
       var matches = data.results[0].result.response.results;
       var matchesArray = [];
 
+      // @TODO should move everything below to the build process
+      // speed things up a little
       for (match in matches) {
         var thisMatch = matches[match];
         // add enemy total power to match data
