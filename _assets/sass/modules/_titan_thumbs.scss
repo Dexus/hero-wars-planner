@@ -1,0 +1,29 @@
+[data-titan-thumb] {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background: $black;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin: 1px;
+  border: 1px solid #666;
+  background-size: cover;
+
+  &.thumb--large {
+    width: 46px;
+    height: 46px;
+    margin: 2px;
+  }
+}
+
+$titans: 0, 1, 2, 3;
+$elements: 400, 401, 402;
+
+@each $element in $elements {
+  @each $titan in $titans {
+    $id: #{$element}#{$titan};
+    [data-titan-thumb="#{$id}"] {
+      background-image: url("../img/Titans/#{$id}.png");
+    }
+  }
+}

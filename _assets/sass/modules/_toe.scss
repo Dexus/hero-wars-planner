@@ -19,7 +19,7 @@
       text-transform: uppercase;
       letter-spacing: .2px;
       display: block;
-      padding: 3px 12px;
+      padding: 3px 16px;
       line-height: 20px;
       margin: 0 5px;
       box-shadow: 0 0 0 1px #eee;
@@ -56,7 +56,7 @@
     &__shortcut {
       display: flex;
       flex-direction: column;
-      margin-left: 37px;
+      margin-left: 15px;
 
       button {
         width: 46px;
@@ -106,7 +106,7 @@
       max-width: 25%;
     }
 
-    img {
+    .thumb--large {
       opacity: .5;
       max-width: 46px;
       margin: 2px;
@@ -115,7 +115,7 @@
     input {
       display: none;
 
-      &:checked + img {
+      &:checked + .thumb--large {
         opacity: 1;
       }
     }

@@ -59,19 +59,8 @@ $(function () {
       var matches = data.results[0].result.response.results;
       var matchesArray = [];
 
-      // @TODO should move everything below to the build process
-      // speed things up a little
       for (match in matches) {
-        var thisMatch = matches[match];
-        // add enemy total power to match data
-        var power = 0;
-        var attackerTeam = thisMatch.defBattle.attackers;
-        for (titan in attackerTeam) {
-          power += attackerTeam[titan].power;
-        }
-        thisMatch.enemypower = power;
-
-        matchesArray.push(thisMatch);
+        matchesArray.push(matches[match]);
       }
 
       var orderedMatches = matchesArray.sort(function (a, b) {
@@ -79,6 +68,7 @@ $(function () {
       });
 
       toe.matches = orderedMatches;
+      console.log(toe.matches);
     });
   }
 });
